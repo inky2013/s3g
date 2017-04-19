@@ -1,4 +1,4 @@
 language: python
 python:
   - "3.6"
-script: _s3g/main --server=false
+script: python _s3g/main.py --server=false --working-directory=./
