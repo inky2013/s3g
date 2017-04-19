@@ -70,11 +70,12 @@ def main(args):
         build_site(logger, plugin_manager, args)
 
     server_callback = None
-    if bool(args['server-refresh']):
+    if args['server-refresh'] == 'true':
         server_callback = server_watchdog_callback
 
-    if bool(args['server']):
+    if args['server'] == 'true':
         server_thread, addr = httpserver.start_server(_directories['output'], 'localhost', 8000, server_callback, _directories['src'])
+        logger.info(f'Started server at {addr[0]}:{str(addr[1])}')
 
         try:
             while server_thread.is_alive():
