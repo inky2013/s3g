@@ -175,7 +175,7 @@ def process_files(**kwargs) -> list:
                         page = plugin.process(page)
                     except Exception as e:
                         logger.critical(e)
-                        f = open(f'{_directories["error"]}/error-{str(error_count)}.txt', "w+")
+                        f = open(f'{directories["error"]}/error-{str(error_count)}.txt', "w+")
                         f.write(safe_text)
                         f.close()
                         error_count += 1
@@ -185,7 +185,7 @@ def process_files(**kwargs) -> list:
                         was_processed = True
                 if iteration_count > iter_limit:
                     logger.warning(
-                        f'Iteration limit reached while processing "{os.path.relpath(page.path, _directories["src"])}"')
+                        f'Iteration limit reached while processing "{os.path.relpath(page.path, directories["src"])}"')
                     break
                 if not was_processed:
                     break
