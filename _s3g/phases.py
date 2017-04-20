@@ -1,5 +1,6 @@
 from base import *
 from shutil import copy as shutil_copy_file
+from shutil import rmtree
 import os
 
 
@@ -18,7 +19,7 @@ def prepare_new_build(**kwargs) -> None:
 
     if os.path.exists(kwargs['directories']['output']):
         try:
-            os.remove(kwargs['directories']['output'])
+            rmtree(kwargs['directories']['output'])
         except PermissionError:
             kwargs['logger'].error(f"PermissionError deleting \"{kwargs['directories']['output']}\"")
         else:
