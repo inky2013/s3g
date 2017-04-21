@@ -13,8 +13,6 @@ class VarSetter(base.Plugin):
 
     def process(self, obj):
         matches = re.findall('%.*?%', obj.text)
-        print(matches)
-        print(obj.data.data)
         if len(matches) == 0:
             return obj
         for match in matches:
