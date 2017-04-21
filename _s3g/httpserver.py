@@ -5,11 +5,13 @@ from os.path import join
 
 
 class ObserverEventHandler:
-    def __init__(self, callback):
+    def __init__(self, callback, server_object):
         self.callback = callback
+        self.server = server_object
 
     def dispatch(self, event):
         self.callback()
+        #self.server.did_update = True
 
 
 def start_server(serve_path, ip, port, callback=None, observe_path='src'):
@@ -28,7 +30,7 @@ def start_server(serve_path, ip, port, callback=None, observe_path='src'):
         return
 
     observer = Observer()
-    observer.schedule(ObserverEventHandler(callback), observe_path, recursive=True)
+    observer.schedule(ObserverEventHandler(callback, httpd), observe_path, recursive=True)
     observer.start()
 
     return server_thread, server_address

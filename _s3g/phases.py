@@ -50,6 +50,8 @@ def collect_data(**kwargs) -> DataManager:
 
     logger.info(f"Read data from \"{directories['data']}\"")
 
+    data_manager = DataManager(logger)
+
     for x in range(len(data_list)):
         for plugin in plugin_manager.get_plugins(1):
             pre = data_list[x]
@@ -57,8 +59,12 @@ def collect_data(**kwargs) -> DataManager:
             if data_list[x] is None:
                 data_list[x] = pre
                 logger.warning(f'{plugin.name} returned None so it was ignored')
+        path = data_list[x].name.split('.')
+        if not isinstance(path, list):
+            path = [path]
+        data_manager.add_data(path, data_list[x].data)
 
-    return DataManager(logger)
+    return data_manager
 
 
 def collect_templates(**kwargs) -> SectionManager:
@@ -92,7 +98,7 @@ def collect_templates(**kwargs) -> SectionManager:
         else:
             section_manager.add_section(pre)
 
-    return SectionManager
+    return section_manager
 
 
 def index_site(**kwargs) -> list:
@@ -174,7 +180,8 @@ def process_files(**kwargs) -> list:
                     try:
                         page = plugin.process(page)
                     except Exception as e:
-                        logger.critical(e)
+                        logger.warning(f'Error while processing file with {str(plugin.name)}')
+                        logger.warning(e)
                         f = open(f'{directories["error"]}/error-{str(error_count)}.txt', "w+")
                         f.write(safe_text)
                         f.close()
