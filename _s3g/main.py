@@ -63,11 +63,10 @@ def build_site(logger, plugin_manager, args):
 def main(args):
     os.chdir(args['working-directory'])
     logger = base.get_logger(__name__, args['log-level'])
-    plugin_manager = load_plugins(logger=logger, directories=_directories)
-    build_site(logger, plugin_manager, args)
+    build_site(logger, load_plugins(logger=logger, directories=_directories), args)
 
     def server_watchdog_callback():
-        build_site(logger, plugin_manager, args)
+        build_site(logger, load_plugins(logger=logger, directories=_directories), args)
 
     server_callback = None
     if args['server-refresh'] == 'true':
