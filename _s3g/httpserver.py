@@ -29,8 +29,16 @@ def start_server(serve_path, ip, port, callback=None, observe_path='src'):
     if callback is None:
         return
 
-    observer = Observer()
-    observer.schedule(ObserverEventHandler(callback, httpd), observe_path, recursive=True)
-    observer.start()
+    observers = list()
+    if isinstance(observe_path, tuple) or isinstance(observe_path, list):
+        for path in observe_path:
+            observer = Observer()
+            observer.schedule(ObserverEventHandler(callback, httpd), path, recursive=True)
+            observer.start()
+            observers.append(observer)
+    else:
+        observer = Observer()
+        observer.schedule(ObserverEventHandler(callback, httpd), observe_path, recursive=True)
+        observer.start()
 
     return server_thread, server_address

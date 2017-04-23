@@ -73,7 +73,7 @@ def main(args):
         server_callback = server_watchdog_callback
 
     if args['server'] == 'true':
-        server_thread, addr = httpserver.start_server(_directories['output'], 'localhost', 8000, server_callback, _directories['src'])
+        server_thread, addr = httpserver.start_server(_directories['output'], 'localhost', 8000, server_callback, (_directories['src'], _directories['data'], _directories['templates'], _directories['plugins']))
         logger.info(f'Started server at {addr[0]}:{str(addr[1])}')
 
         try:
